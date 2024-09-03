@@ -52,11 +52,36 @@ mapy są potężnym narzędziem pozwalającym na tworzenie tablic, których inde
  - `M[124]++;` zwiększamy wartość wcześniej nie używanej komórki o 1, więc teraz jest *1* (domyślnie miała *0*)
  - `M.count(21);` sprawdzamy czy komórka istnieje
 ###Iterator
+Iterator to wskaźnik, za pomocą którego jesteśmy w stanie iść element po elemencie przez zmienne wielowymiarowe. W przypadku typu zmiennych takich jak **Mapy**, gdzie kolejne komórki nie są numerowane po kolei jest on niezbędny.
 ```cpp
+map<int,int>::iterator it;
 for(it=M.begin();it!=M.end();it++)
         cout<<it->first<<"\t:\t"<<M[it->first]<<"\t:\t"<<it->second<<endl;
 ```
  - `it->first` to jest numer komórki
  - `it->second` to wartość komórki, czyli to samo co `M[it->first]`
-<br> warto zwrócić uwagę na warunki pętli. iterator idzie od poczatku, a konczy gdy dochodzi do końca
-### Kolejki stosy i inne takie
+<br> warto zwrócić uwagę na warunki pętli. iterator idzie od poczatku `M.begin()`, a konczy gdy dochodzi do końca `M.end()`
+###Reverse iterator
+Tak, istnieje coś takiego jak *reverse iterator*. Jest to iterator, tyle że idzie od tyłu (obv)
+```cpp
+map<int,int>::reverse_iterator rit;
+for(rit=M.rbegin();rit!=M.rend();rit++)
+        cout<<rit->first<<"\t:\t"<<rit->second<<endl;
+```
+Ważne do zauważenia jest to, że zamiast `M.begin()` używamy `M.rbegin()`, czyli reverse begin, a nie end! To są wskaźniki i nie można ich tak łatwo poprostu podmienić! Analogicznie z `M.rend()`
+
+### Kolejki i stosy
+Kolejka i stos charakteryzują się tym, że nie mamy dostępu do wszystkich elementów w jednym momencie, lecz "wzamian" mogą one zmieniać swoją długość bardzo szybko w przeciwieństwie do np *Vektora*. Dodatkowo kolejka priorytetowa ma jedno z najszybszych możliwych sortowań w c++.
+
+|   	                |Kolejka                        |Kolejka priorytetowa           |Stos                   |
+|---	                |:---:	                        |:---:	                        |:---:                  |
+|Rodzaj                 |FIFO  	                        |FIFO (z sortowaniem rosnącym)  |FILO                   |
+|Definiowanie           |`queue<int>K;` 	        |`priority_queue<int>KP;`       |`stack<int>S;`         |
+|Dokładanie elementu    |`K.push(x)`                    |`KP.push(x)`   	        |`S.push(x)`            |
+|Zdejmowanie elementu   |`K.pop()`                      |`KP.pop()`                     |`S.pop()`              |
+|Odczytywanie elementu  |`K.front()` lub `K.back()`     |`KP.top()` lub `KP.bottom()`   |`S.top()`              |
+|Rozmiar                |`K.size()`                     |`KP.size()`                    |`S.size()`             |
+
+
+ - FIFO = First in First Out
+ - FILO = First in Last Out

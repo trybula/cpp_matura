@@ -1,41 +1,51 @@
 # Obsługa plików
 ---
+Do obsługi plików używamy biblioteki `fstream`, która również znajduje się w `<bits/stdc++.h>`<br>
+### Odczyt danych
 ```cpp
-#include<bits/stdc++.h>
-using namespace std;
-int main(){
+fstream plik;
 int liczba;
-string sliczba;
-fstream plik,plik1;//zmienna dla plikow; bilblioteka fstream
-plik.open("dane.txt",ios::in);//"D:\dane\dane.txt" dla pliku w innym folderze.  in-do odczytu | out- do zapisu
-if(plik.is_open()){//ewentualnie if(plik.good());
-    cout<<"Plik otwarto \n";//wazne by na wszelki sprawdzi
-
-    while(!plik.eof()&&plik>>liczba){ //eof = end of file
-       // plik>>liczba moze tez stringa wczytsac
-       //plik>>liczba uznaje spacje i entery jako nic i koniec wczytywania (tak samo jak cin);
-        cout<<liczba<<" ";
-
+plik.open("dane.txt",ios::in);
+if(plik.good()){
+    while(!plik.eof()&&plik>>liczba){
+        cout<<liczba<<endl;
     }
 }
-/* zamiast plik>>liczba (odpowiednik cina) mozna wczytac getline(plik,sliczba); on wtedy pobierze cala linijke do stringa (jak normalnie getline);
+else
+    cout<<"ERROR PLIKU";
+plik.close();
+```
 
-while(!plik.eof()){
-    getline(plik,sliczba);
-    if(sliczba!="") //by pominac puste wiersze;
-        cout<<sliczba;
+ - `fstream plik` tworzy zmienną potrzebną do obsługi plików
+ - `plik.open("dane.txt",ios::in);` otwiera plik *dane.txt* do odczytu (żeby zapisywać należy `ios::in` zamienić na `ios::out`)
+ - `if(plik.good())` sprawdza, czy plik został poprawnie otworzony
+ - `plik.eof()` zwróci **prawdę**, gdy dotrzemy do końca pliku
+ - `plik>>liczba` wczytuje zawartość pliku do zmiennej *liczba*. Działa to tak samo jak `cin>>` a zatem czyta to aż do białego znaku. Ta linijka umieszczona w warunku sprawdza, czy cokolwiek zostało odczytane.
+ - `plik.close();` zamyka plik. jest to BARDZO ważne
+
+
+### Zapis danych
+Zapisujemy analogicznie do `cin>>`
+```cpp
+fstream plik1;
+plik1.open("danewyjsciowe.txt",ios::out);
+plik1<<"To jest test zapisu"<<endl<<"1234"<<endl<<5678;
+plik1.close();
+```
+Jeśli wcześniej istniał plik o takiej nazwie to zostanie on usunięty i nadpisany
+### Getline
+Jeśli chcemy odczytać całą linię z pliku tekstowego do zmiennej używamy polecenia `getline` analogicznie do kożystania z niego z `cin`
+```cpp
+fstream plik;
+string sliczba;
+plik.open("test.txt", ios::in);
+if(plik.good()){
+    while(!plik.eof()){
+        getline(plik,sliczba);
+        if(sliczba!="")
+            cout<<sliczba;
+    }
 }
-*/
 else
     cout<<"Blad pliku";
-plik.close();//zamyka plik
-
-plik1.open("danewyjsciowe.txt",ios::out);//jeli ten plik nie istnieje to go utworzy, a jesli istnieje to zostanie wykasowany
-plik1<<"To jest test zapisu"<<endl<<"1234"<<endl<<5678;//wpisywanie do pliku ios:out
-
-plik1.close();
-return 0;
-}
-//czyli plik>> to jest cin, a getline(plik,liczba); to getline
-
 ```
